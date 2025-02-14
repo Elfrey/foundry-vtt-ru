@@ -1,0 +1,51 @@
+name: Release Foundry VTT
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Set version and update module.json
+        run: |
+          # Extract the version from the release tag (e.g. "v1.0.0" -> "1.0.0")
+          VERSION="${{ github.event.release.tag_name }}"
+          VERSION_STRIPPED="${VERSION#v}"
+
+          # Use 'jq' to update module.json with new version and download link
+          jq --arg version "$VERSION_STRIPPED" \
+             --arg tag "${{ github.event.release.tag_name }}" \
+             --arg repo "${{ github.repository }}" \
+             '
+               .version = $version
+               | .download = "https://github.com/\($repo)/releases/download/\($tag)/module.zip"
+             ' module.json > module.json.tmp
+
+          mv module.json.tmp module.json
+
+      - name: Create module.zip
+        run: zip -r module.zip ru-ru module.json
+
+      - name: Upload release asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./module.zip
+          asset_name: module.zip
+          asset_content_type: application/zip
