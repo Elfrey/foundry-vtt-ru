@@ -5,6 +5,9 @@ export async function init() {
 
 	if (game.settings.get("ru-ru", "compendiumTranslation")) {
 		setupBabele("dnd5e");
+		if (game.modules.get('chris-premades')) {
+			setupBabele("chris-premades");
+		}
 		registerConverters();
 	} else {
 		if (game.settings.get("ru-ru", "compendiumTranslation")) {
