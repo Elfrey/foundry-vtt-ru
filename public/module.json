@@ -381,6 +381,11 @@
 		},
 		{
 			"lang": "ru",
+			"path": "i18n/modules/chris-premades.json",
+			"module": "chris-premades"
+		},
+		{
+			"lang": "ru",
 			"path": "i18n/modules/colorsettings.json",
 			"module": "colorsettings"
 		},
