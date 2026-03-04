@@ -21,6 +21,10 @@ export async function init() {
           setupBabele("dnd5e/gambit");
         }
       }
+
+			if (game.modules.get("kctg-5e")) {
+				setupBabele("dnd5e/kctg-5e");
+			}
     }
   }
 
