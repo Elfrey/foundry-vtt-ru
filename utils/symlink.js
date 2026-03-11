@@ -1,34 +1,55 @@
-import { constants } from "node:fs";
-import { access, lstat, rm, symlink } from "node:fs/promises";
-import { join, resolve } from "node:path";
-import { process } from "node:process";
-
-/*
+/**
 Create a symlink from the build directory to the Foundry data directory.
 
 Required Environment Variables:
-- MODULE_ID: ID of the package
 - PACKAGE_TYPE: type of the package to symlink (module/system)
 - FOUNDRY_DATA_DIR: path to the Foundry data directory
-- BUILD_DIR: path to the build directory
- */
+*/
+
+import { constants } from "node:fs";
+import { access, lstat, readFile, rm, symlink } from "node:fs/promises";
+import { join, resolve } from "node:path";
+import { process } from "node:process";
 
 async function main() {
-  const moduleId = process.env.MODULE_ID;
   const foundryDataDir = process.env.FOUNDRY_DATA_DIR;
   const packageType = process.env.PACKAGE_TYPE;
-  const buildDir = process.env.BUILD_DIR;
 
-  if (!moduleId || !foundryDataDir || !packageType || !buildDir) {
+  if (!foundryDataDir || !packageType) {
     console.error(
-      "Error: MODULE_ID, FOUNDRY_DATA_DIR, PACKAGE_TYPE, and BUILD_DIR environment variables must be set.",
+      "Error: FOUNDRY_DATA_DIR and PACKAGE_TYPE environment variables must be set.",
     );
+    process.exit(1);
+  }
+
+  const manifestPath = resolve("./public/module.json") || resolve("./public/system.json");
+  
+  if (!manifestPath) {
+    console.error("Error: public/module.json or public/system.json does not exist");
+    process.exit(1);
+  }
+
+  let manifest;
+
+  try {
+    const raw = await readFile(manifestPath, "utf-8");
+    manifest = JSON.parse(raw);
+  } catch (error) {
+    console.error(`Error: Failed to read manifest at ${manifestPath}`);
+    console.error(error);
+    process.exit(1);
+  }
+
+  const moduleId = manifest.id;
+
+  if (!moduleId) {
+    console.error("Error: 'id' field is missing in module.json");
     process.exit(1);
   }
 
   const packageDir = `${packageType}s`;
   const foundryPath = join(foundryDataDir, packageDir, moduleId);
-  const devPath = resolve(buildDir);
+  const devPath = resolve("./public");
 
   try {
     await access(devPath, constants.F_OK);

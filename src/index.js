@@ -57,6 +57,20 @@ Hooks.once("init", async () => {
   CONFIG.fontDefinitions = foundry.utils.mergeObject(CONFIG.fontDefinitions, cyrillicFonts);
   CONFIG.defaultFontFamily = "Roboto";
 
+  /* Включить перевод библиотек */
+  game.settings.register("ru-ru", "compendiumTranslation", {
+    name: "Перевод библиотек",
+    hint: "Некоторые библиотеки системы будут переведены (требуется модуль Babele). Отключите, если хотите использовать оригинальные библиотеки.",
+    type: Boolean,
+    default: true,
+    scope: "world",
+    config: true,
+    restricted: true,
+    onChange: () => {
+      window.location.reload();
+    },
+  });
+
   /* Настройка шрифта для подписей на сцене */
   game.settings.register("ru-ru", "sceneLabelFont", {
     name: "Шрифт подписей на сцене",

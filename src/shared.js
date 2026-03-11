@@ -1,4 +1,6 @@
 export function setupBabele(id) {
+  if (!game.settings.get("ru-ru", "compendiumTranslation")) return;
+
   const title = game.system.title;
 
   if (game.babele) {

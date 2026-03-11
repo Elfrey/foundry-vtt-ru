@@ -3,23 +3,21 @@ import { setupBabele } from "../shared.js";
 export async function init() {
   registerSettings();
 
-  if (game.settings.get("ru-ru", "compendiumTranslation")) {
-    if (game.babele) {
-      registerConverters();
+  if (game.babele) {
+    registerConverters();
 
-      if (game.settings.get("ru-ru", "altTranslation")) {
-        setupBabele("dnd5e/ds");
-      } else {
-        setupBabele("dnd5e/ag");
+    if (game.settings.get("ru-ru", "altTranslation")) {
+      setupBabele("dnd5e/ds");
+    } else {
+      setupBabele("dnd5e/ag");
+    }
+
+    if (game.settings.get("ru-ru", "translateCPR")) {
+      if (game.modules.get("chris-premades")) {
+        setupBabele("dnd5e/chris");
       }
-
-      if (game.settings.get("ru-ru", "translateCPR")) {
-        if (game.modules.get("chris-premades")) {
-          setupBabele("dnd5e/chris");
-        }
-        if (game.modules.get("gambits-premades")) {
-          setupBabele("dnd5e/gambit");
-        }
+      if (game.modules.get("gambits-premades")) {
+        setupBabele("dnd5e/gambit");
       }
     }
   }
@@ -29,19 +27,6 @@ export async function init() {
 
 /* Регистрация настроек */
 function registerSettings() {
-  game.settings.register("ru-ru", "compendiumTranslation", {
-    name: "(D&D5E) Перевод библиотек 5e SRD",
-    hint: "Библиотеки системы D&D5E будут переведены. Перевод библиотек требуется для корректного перевода типов оружия, брони, языков и других элементов (требуется модуль Babele)",
-    type: Boolean,
-    default: true,
-    scope: "world",
-    config: true,
-    restricted: true,
-    onChange: () => {
-      window.location.reload();
-    },
-  });
-
   game.settings.register("ru-ru", "translateCPR", {
     name: "(D&D5E) Перевод библиотек Cauldron of Plentiful Resources и Gambit's Premades",
     hint: "Перевод библиотек модулей Cauldron of Plentiful Resources и Gambit's Premades. Отключите, если у вас возникли проблемы с работой модулями.",
