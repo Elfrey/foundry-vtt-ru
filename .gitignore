@@ -28,3 +28,8 @@ pnpm-debug.log*
 
 # websorm
 .idea/
+
+# slop
+.agents
+.cursor
+AGENTS.md
