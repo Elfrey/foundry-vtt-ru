@@ -5,76 +5,76 @@ import { setupBabele, translateValue } from "../shared.js";
 const EXCEPTIONS = {
   "Arcane Background (Any)": "Мистический дар (любой)",
   "Arcane Background (Gifted)": "Мистический дар (феномен)",
-  "Arcane Background (Miracles)": "Мистический дар (чудеса)",
   "Arcane Background (Magic)": "Мистический дар (магия)",
+  "Arcane Background (Miracles)": "Мистический дар (чудеса)",
   "Arcane Background (Psionics)": "Мистический дар (псионика)",
   "Arcane Background (Weird Science)": "Мистический дар (безумная наука)",
-  "arcane skill": "мистический навык",
+  "Expert in affected Trait": "Профессионал+ в выбранном параметре",
+  "Professional in affected Trait": "Профессионал в выбранном параметре",
   "Tough as Nails": "Несгибаемый",
   "Work the Room": "Заводила",
-  "Professional in affected Trait": "Профессионал в выбранном параметре",
-  "Expert in affected Trait": "Профессионал+ в выбранном параметре",
+  "arcane skill": "мистический навык",
   "maximum die type possible in affected Trait": "максимальное значение выбранного параметра",
 };
 
 const CATEGORIES = {
   Background: "Предыстории",
   Combat: "Боевые",
+  Leadership: "Лидерские",
+  Legendary: "Легендарные",
+  Power: "Мистические",
   Professional: "Профессиональные",
   Social: "Социальные",
   Weird: "Сверхъестественные",
-  Leadership: "Лидерские",
-  Power: "Мистические",
-  Legendary: "Легендарные",
 };
 
 const RANKS = {
+  Heroic: "Герой",
   Novice: "Новичок",
   Seasoned: "Закалённый",
   Veteran: "Ветеран",
-  Heroic: "Герой",
 };
 
 const RANGES = {
-  "Self": "на себя",
-  "Touch": "касание",
   "Cone Template": "конусный шаблон",
-  "Small Blast Template": "малый шаблон",
-  "Medium Blast Template": "средний шаблон",
   "Large Blast Template": "большой шаблон",
+  "Medium Blast Template": "средний шаблон",
+  "Self": "на себя",
   "Sm": "СМК",
   "Sm x 2": "СМК×2",
+  "Small Blast Template": "малый шаблон",
   "Smarts x5 (Sound); Smarts (Silence)": "СМК×5 (звук); СМК (тишина)",
+  "Touch": "касание",
 };
 
 const DURATIONS = {
-  "Instant": "мгновенное",
-  "Special": "особое",
-  "One Round": "1 раунд",
-  "One Minute": "1 минута",
-  "5": "5 минут",
-  "5 minutes": "5 минут",
   "10 minutes": "10 минут",
   "30 Minutes": "30 минут",
-  "One hour": "1 час",
-  "One day": "1 день",
-  "Until the end of the victim's next turn": "до конца следующего хода цели",
-  "5 (detect), one hour (conceal)": "5 (обнаружение); 1 час (скрытие)",
-  "Instant (Sound); 5 (Silence)": "мгновенное (звук); 5 (тишина)",
+  "5": "5 минут",
   "5 (boost); Instant (lower)": "5 (усилить); мгновенное (ослабить)",
-  "Instant (slot); 5 (speed)": "мгновенное (замедление); 5 (ускорение)",
+  "5 (detect), one hour (conceal)": "5 (обнаружение); 1 час (скрытие)",
+  "5 minutes": "5 минут",
   "A brief conversation of about five minutes": "до 5 минут (короткая беседа)",
+  "Instant": "мгновенное",
+  "Instant (Sound); 5 (Silence)": "мгновенное (звук); 5 (тишина)",
+  "Instant (slot); 5 (speed)": "мгновенное (замедление); 5 (ускорение)",
+  "One Minute": "1 минута",
+  "One Round": "1 раунд",
+  "One day": "1 день",
+  "One hour": "1 час",
+  "Special": "особое",
+  "Until the end of the victim's next turn": "до конца следующего хода цели",
 };
 
 export function init() {
   game.settings.register("ru-ru", "setupRules", {
-    name: "(SWADE) Перевод настроек системы",
-    hint: "Автоматический перевод стандартных навыков и других настроек системы SWADE. Отключите, если желаете внести изменения вручную.",
-    type: Boolean,
-    default: true,
-    scope: "world",
     config: true,
+    default: true,
+    hint: "Автоматический перевод стандартных навыков и других настроек системы SWADE. Отключите, если желаете внести изменения вручную.",
+    name: "(SWADE) Перевод настроек системы",
     restricted: true,
+    scope: "world",
+    type: Boolean,
   });
 
   if (game.modules.get("swade-core-rules")?.active) {
@@ -103,31 +103,43 @@ export function init() {
 }
 
 function registerConverters() {
-  if (!game.babele) return;
+  if (!game.babele) {
+    return;
+  }
 
   game.babele.registerConverters({
     convertCategory: (value) => {
-      if (!value) return;
+      if (!value) {
+        return;
+      }
       return translateValue(value, CATEGORIES);
     },
 
-    convertRank: (value) => {
-      if (!value) return;
-      return translateValue(value, RANKS);
-    },
-
-    convertRange: (value) => {
-      if (!value) return;
-      return translateValue(value, RANGES);
-    },
-
     convertDuration: (value) => {
-      if (!value) return;
+      if (!value) {
+        return;
+      }
       return translateValue(value, DURATIONS);
     },
 
+    convertRange: (value) => {
+      if (!value) {
+        return;
+      }
+      return translateValue(value, RANGES);
+    },
+
+    convertRank: (value) => {
+      if (!value) {
+        return;
+      }
+      return translateValue(value, RANKS);
+    },
+
     convertRequirements: (requirements) => {
-      if (!requirements) return;
+      if (!requirements) {
+        return;
+      }
 
       let packEdges = "swade.edges";
       let packHindrances = "swade.hindrances";
@@ -153,7 +165,9 @@ function registerConverters() {
       const translatedSkills = packs.find((pack) => pack.metadata.id === packSkills).translations;
 
       return requirements.map((data) => {
-        if (!data.label) return data;
+        if (!data.label) {
+          return data;
+        }
 
         const translatedLabel =
           EXCEPTIONS[data.label] ||
@@ -161,7 +175,9 @@ function registerConverters() {
           translatedHindrances[data.label]?.name ||
           translatedSkills[data.label]?.name;
 
-        if (translatedLabel) data.label = translatedLabel;
+        if (translatedLabel) {
+          data.label = translatedLabel;
+        }
 
         return data;
       });

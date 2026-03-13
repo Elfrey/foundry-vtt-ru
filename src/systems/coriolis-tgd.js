@@ -6,7 +6,9 @@ const translationCache = new Map();
 export async function init() {
   setupBabele("coriolis-tgd");
 
-  if (!game.babele) return;
+  if (!game.babele) {
+    return;
+  }
 
   // Pre-load translation files before registering converters
   await loadTranslationFiles([
@@ -94,24 +96,21 @@ function applyTranslation(fileName) {
     const result = {};
 
     for (const [id, entry] of Object.entries(originalValue)) {
-      if (!entry?.name) {
+      if (entry?.name) {
+        const translation = fieldTranslations?.[entry.name] || globalTranslations[entry.name];
+
+        if (translation) {
+          result[id] = foundry.utils.mergeObject(entry, {
+            description: translation.description ?? entry.description,
+            name: translation.name ?? entry.name,
+            translated: true,
+          });
+        } else {
+          result[id] = entry;
+        }
+      } else {
         result[id] = entry;
-        continue;
       }
-
-      // Look up translation by name: per-item first, then global fallback
-      const translation = fieldTranslations?.[entry.name] || globalTranslations[entry.name];
-
-      if (!translation) {
-        result[id] = entry;
-        continue;
-      }
-
-      result[id] = foundry.utils.mergeObject(entry, {
-        name: translation.name ?? entry.name,
-        description: translation.description ?? entry.description,
-        translated: true,
-      });
     }
 
     return result;

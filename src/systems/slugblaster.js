@@ -1,5 +1,5 @@
-import { setupBabele } from "../shared.js";
 import { Converters } from "../../babele/script/converters.js";
+import { setupBabele } from "../shared.js";
 
 export function init() {
   setupBabele("slugblaster");
@@ -9,12 +9,12 @@ export function init() {
 function registerConverters() {
   game.babele.registerConverters({
     fromPackCustom: Converters.fromPack({
-      name: "name",
       description: "system.description",
+      name: "name",
     }),
 
-    rollTableCustom: (results, translations) => {
-      return results.map((data) => {
+    rollTableCustom: (results, translations) =>
+      results.map((data) => {
         if (!translations) {
           return data;
         }
@@ -36,11 +36,10 @@ function registerConverters() {
         }
 
         return foundry.utils.mergeObject(data, {
-          name: translation.name ?? data.name,
           description: translation.description ?? data.description,
+          name: translation.name ?? data.name,
           translated: true,
         });
-      });
-    },
+      }),
   });
 }

@@ -1,22 +1,22 @@
 import { setupBabele, translateValue } from "../shared.js";
 
 const CLASSES = {
+  Assassins: "Душегубы",
+  Bravos: "Бандиты",
+  Cult: "Адепты",
   Cutter: "Головорез",
   Ghost: "Призрак",
+  Hawkers: "Барыги",
   Hound: "Ищейка",
   Hull: "Автоматон",
   Leech: "Умелец",
   Lurk: "Проныра",
+  Shadows: "Тени",
   Slide: "Артист",
+  Smugglers: "Перевозчики",
   Spider: "Кукловод",
   Vampire: "Вампир",
   Whisper: "Мистик",
-  Assassins: "Душегубы",
-  Bravos: "Бандиты",
-  Cult: "Адепты",
-  Hawkers: "Барыги",
-  Shadows: "Тени",
-  Smugglers: "Перевозчики",
 };
 
 export function init() {
@@ -33,11 +33,15 @@ export function init() {
 }
 
 function registerConverters() {
-  if (!game.babele) return;
+  if (!game.babele) {
+    return;
+  }
 
   game.babele.registerConverters({
     convertClass: (cls) => {
-      if (!cls) return;
+      if (!cls) {
+        return;
+      }
       return translateValue(cls, CLASSES);
     },
   });

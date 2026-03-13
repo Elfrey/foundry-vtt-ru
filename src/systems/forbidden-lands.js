@@ -5,6 +5,6 @@ export function init() {
       "datasetDir",
       "modules/ru-ru/compendium/fbl/dataset/dataset-ru.json",
     );
-    // console.log('Активирован перевод конструктора Forbidden Lands')
+    // Console.log('Активирован перевод конструктора Forbidden Lands')
   });
 }

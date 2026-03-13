@@ -15,10 +15,10 @@ function registerConverters() {
     }
 
     try {
-      const translations = game.babele.translations;
+      const { translations } = game.babele;
 
       if (!translations || translations.length < 1) {
-        // console.warn('Dragonbane: No Babele translations found')
+        // Console.warn('Dragonbane: No Babele translations found')
         return null;
       }
 
@@ -26,20 +26,16 @@ function registerConverters() {
       const map = {};
 
       for (const translation of translations) {
-        if (!translation.entries) {
-          // console.log(`Dragonbane: Translation ${index} has no entries`)
-          continue;
-        }
+        if (translation.entries) {
+          for (const packName of Object.keys(translation.entries)) {
+            const packData = translation.entries[packName];
 
-        for (const packName of Object.keys(translation.entries)) {
-          const packData = translation.entries[packName];
-
-          if (packData?.items) {
-            // console.log(`Dragonbane: Found items in pack "${packName}"`)
-            for (const originalName of Object.keys(packData.items)) {
-              const item = packData.items[originalName];
-              if (item?.name) {
-                map[originalName] = item.name;
+            if (packData?.items) {
+              for (const originalName of Object.keys(packData.items)) {
+                const item = packData.items[originalName];
+                if (item?.name) {
+                  map[originalName] = item.name;
+                }
               }
             }
           }

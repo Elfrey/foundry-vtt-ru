@@ -40,15 +40,15 @@ Hooks.once("init", async () => {
       editor: true,
       fonts: [],
     },
+    "Roboto": {
+      editor: true,
+      fonts: [],
+    },
     "Roboto Condensed": {
       editor: true,
       fonts: [],
     },
     "Roboto Serif": {
-      editor: true,
-      fonts: [],
-    },
-    "Roboto": {
       editor: true,
       fonts: [],
     },
@@ -59,31 +59,31 @@ Hooks.once("init", async () => {
 
   /* Включить перевод библиотек */
   game.settings.register("ru-ru", "compendiumTranslation", {
-    name: "Перевод библиотек",
-    hint: "Некоторые библиотеки системы будут переведены (требуется модуль Babele). Отключите, если хотите использовать оригинальные библиотеки.",
-    type: Boolean,
-    default: true,
-    scope: "world",
     config: true,
-    restricted: true,
+    default: true,
+    hint: "Некоторые библиотеки системы будут переведены (требуется модуль Babele). Отключите, если хотите использовать оригинальные библиотеки.",
+    name: "Перевод библиотек",
     onChange: () => {
       window.location.reload();
     },
+    restricted: true,
+    scope: "world",
+    type: Boolean,
   });
 
   /* Настройка шрифта для подписей на сцене */
   game.settings.register("ru-ru", "sceneLabelFont", {
-    name: "Шрифт подписей на сцене",
-    hint: "Шрифт, используемый для имён токенов и названий заметок на сцене.",
-    type: Number,
-    default: Object.keys(CONFIG.fontDefinitions).indexOf(CONFIG.defaultFontFamily),
     choices: Object.keys(CONFIG.fontDefinitions),
-    scope: "world",
     config: true,
-    restricted: true,
+    default: Object.keys(CONFIG.fontDefinitions).indexOf(CONFIG.defaultFontFamily),
+    hint: "Шрифт, используемый для имён токенов и названий заметок на сцене.",
+    name: "Шрифт подписей на сцене",
     onChange: (_value) => {
       window.location.reload();
     },
+    restricted: true,
+    scope: "world",
+    type: Number,
   });
 
   /* Шрифт для подписей на сцене */

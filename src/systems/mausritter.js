@@ -4,18 +4,18 @@ export function init() {
   setupBabele("mausritter");
 
   CONFIG.MAUSRITTER.tables = {
-    tables: "Таблицы",
     birthsign: "Мышь - Знак рождения",
-    physicalDetail: "Мышь - Физическая особенность",
-    coatPattern: "Мышь - Узор окраса",
     coatColor: "Мышь - Цвет окраса",
+    coatPattern: "Мышь - Узор окраса",
     firstName: "Мышиные имена - Имя при рождении",
     lastName: "Мышиные имена - Матроним",
     npcAppearance: "Мыши ведущего - Внешность",
     npcBirthsign: "Мыши ведущего - Знак рождения и склонности",
     npcQuirk: "Мыши ведущего - Особенность",
+    npcRelationship: "Мыши ведущего - Отношения",
     npcSocial: "Мыши ведущего - Положение в обществе и плата за услуги",
     npcWants: "Мыши ведущего - Желания",
-    npcRelationship: "Мыши ведущего - Отношения",
+    physicalDetail: "Мышь - Физическая особенность",
+    tables: "Таблицы",
   };
 }

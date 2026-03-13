@@ -1,25 +1,27 @@
 export function setupBabele(id) {
-  if (!game.settings.get("ru-ru", "compendiumTranslation")) return;
+  if (!game.settings.get("ru-ru", "compendiumTranslation")) {
+    return;
+  }
 
-  const title = game.system.title;
+  const { title } = game.system;
 
   if (game.babele) {
     game.babele.register({
-      module: "ru-ru",
-      lang: "ru",
       dir: `compendium/${id}`,
+      lang: "ru",
+      module: "ru-ru",
     });
 
     game.settings.set("babele", "showOriginalName", true);
   } else {
     new Dialog({
-      title: "Перевод библиотек",
-      content: `<p>Для перевода библиотек <b>${title}</b> требуется активировать модули <b>Babele и libWrapper</b><p>`,
       buttons: {
         done: {
           label: "Хорошо",
         },
       },
+      content: `<p>Для перевода библиотек <b>${title}</b> требуется активировать модули <b>Babele и libWrapper</b><p>`,
+      title: "Перевод библиотек",
     }).render(true);
   }
 }

@@ -1,5 +1,5 @@
 import { setupBabele } from "../shared.js";
 
-export function init() {
+export const init = () => {
   setupBabele("coc7");
-}
+};

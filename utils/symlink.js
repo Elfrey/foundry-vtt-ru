@@ -5,10 +5,9 @@ Required Environment Variables:
 - PACKAGE_TYPE: type of the package to symlink (module/system)
 - FOUNDRY_DATA_DIR: path to the Foundry data directory
 */
-
-import { constants } from "node:fs";
 import { access, lstat, readFile, rm, symlink } from "node:fs/promises";
 import { join, resolve } from "node:path";
+import { constants } from "node:fs";
 import { process } from "node:process";
 
 async function main() {
@@ -16,14 +15,12 @@ async function main() {
   const packageType = process.env.PACKAGE_TYPE;
 
   if (!foundryDataDir || !packageType) {
-    console.error(
-      "Error: FOUNDRY_DATA_DIR and PACKAGE_TYPE environment variables must be set.",
-    );
+    console.error("Error: FOUNDRY_DATA_DIR and PACKAGE_TYPE environment variables must be set.");
     process.exit(1);
   }
 
   const manifestPath = resolve("./public/module.json") || resolve("./public/system.json");
-  
+
   if (!manifestPath) {
     console.error("Error: public/module.json or public/system.json does not exist");
     process.exit(1);
@@ -32,7 +29,7 @@ async function main() {
   let manifest;
 
   try {
-    const raw = await readFile(manifestPath, "utf-8");
+    const raw = await readFile(manifestPath, "utf8");
     manifest = JSON.parse(raw);
   } catch (error) {
     console.error(`Error: Failed to read manifest at ${manifestPath}`);
@@ -64,8 +61,8 @@ async function main() {
     if (stats.isSymbolicLink()) {
       console.warn(`Removing existing symlink at: ${foundryPath}`);
       await rm(foundryPath, {
-        recursive: true,
         force: true,
+        recursive: true,
       });
     } else {
       console.error(

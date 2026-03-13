@@ -2,9 +2,9 @@ import { Glob } from "bun";
 import path from "node:path";
 
 const globs = {
-  systems: new Glob("public/i18n/systems/*.json"),
   modules: new Glob("public/i18n/modules/*.json"),
   styles: new Glob("public/styles/*.css"),
+  systems: new Glob("public/i18n/systems/*.json"),
 };
 
 const languages = [
@@ -46,8 +46,8 @@ async function main() {
   for await (const file of globs.modules.scan(".")) {
     modules.push({
       lang: "ru",
-      path: file.replace(/\\/g, "/").replace("public/", ""),
       module: path.basename(file, ".json"),
+      path: file.replace(/\\/g, "/").replace("public/", ""),
     });
   }
 

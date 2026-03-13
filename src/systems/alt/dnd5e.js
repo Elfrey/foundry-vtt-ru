@@ -1,15 +1,15 @@
 export async function init() {
   game.settings.register("ru-ru", "altTranslation", {
-    name: "(D&D5E) Альтернативный перевод",
-    hint: "Использовать альтернативный перевод от Dungeons.ru. Иначе будет использоваться официальный перевод Hobby World и Adventure Guys (требуется модуль libWrapper)",
-    type: Boolean,
-    default: false,
-    scope: "world",
     config: true,
-    restricted: true,
+    default: false,
+    hint: "Использовать альтернативный перевод от Dungeons.ru. Иначе будет использоваться официальный перевод Hobby World и Adventure Guys (требуется модуль libWrapper)",
+    name: "(D&D5E) Альтернативный перевод",
     onChange: (_value) => {
       window.location.reload();
     },
+    restricted: true,
+    scope: "world",
+    type: Boolean,
   });
 
   if (typeof libWrapper === "function" && game.settings.get("ru-ru", "altTranslation")) {

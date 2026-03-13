@@ -28,16 +28,16 @@ export async function init() {
 /* Регистрация настроек */
 function registerSettings() {
   game.settings.register("ru-ru", "translateCPR", {
-    name: "(D&D5E) Перевод библиотек Cauldron of Plentiful Resources и Gambit's Premades",
-    hint: "Перевод библиотек модулей Cauldron of Plentiful Resources и Gambit's Premades. Отключите, если у вас возникли проблемы с работой модулями.",
-    type: Boolean,
-    default: true,
-    scope: "world",
     config: true,
-    restricted: true,
+    default: true,
+    hint: "Перевод библиотек модулей Cauldron of Plentiful Resources и Gambit's Premades. Отключите, если у вас возникли проблемы с работой модулями.",
+    name: "(D&D5E) Перевод библиотек Cauldron of Plentiful Resources и Gambit's Premades",
     onChange: () => {
       window.location.reload();
     },
+    restricted: true,
+    scope: "world",
+    type: Boolean,
   });
 }
 
@@ -45,7 +45,9 @@ function registerSettings() {
 function registerHooks() {
   /*  Настройка автоопределения анимаций AA  */
   Hooks.on("renderSettingsConfig", (_app, html, _data) => {
-    if (!game.user.isGM) return;
+    if (!game.user.isGM) {
+      return;
+    }
 
     let lastMenuSetting;
     if (game.release.generation < 13) {
@@ -96,22 +98,22 @@ function registerConverters() {
         }
 
         return foundry.utils.mergeObject(data, {
-          name: translation.name,
           image: {
             caption: translation.caption ?? data.image.caption,
           },
+          name: translation.name,
           src: translation.src ?? data.src,
-          text: {
-            content: translation.text ?? data.text.content,
-          },
-          video: {
-            width: translation.width ?? data.video.width,
-            height: translation.height ?? data.video.height,
-          },
           system: {
             tooltip: translation.tooltip ?? data.system.tooltip,
           },
+          text: {
+            content: translation.text ?? data.text.content,
+          },
           translated: true,
+          video: {
+            height: translation.height ?? data.video.height,
+            width: translation.width ?? data.video.width,
+          },
         });
       });
     },
@@ -138,13 +140,13 @@ async function updateAA() {
     }
 
     const newSettings = {
-      melee: mergeArraysByLabel(currentSettings.melee, translatedSettings.melee),
-      range: mergeArraysByLabel(currentSettings.range, translatedSettings.range),
-      ontoken: mergeArraysByLabel(currentSettings.ontoken, translatedSettings.ontoken),
-      templatefx: mergeArraysByLabel(currentSettings.templatefx, translatedSettings.templatefx),
-      aura: mergeArraysByLabel(currentSettings.aura, translatedSettings.aura),
-      preset: mergeArraysByLabel(currentSettings.preset, translatedSettings.preset),
       aefx: mergeArraysByLabel(currentSettings.aefx, translatedSettings.aefx),
+      aura: mergeArraysByLabel(currentSettings.aura, translatedSettings.aura),
+      melee: mergeArraysByLabel(currentSettings.melee, translatedSettings.melee),
+      ontoken: mergeArraysByLabel(currentSettings.ontoken, translatedSettings.ontoken),
+      preset: mergeArraysByLabel(currentSettings.preset, translatedSettings.preset),
+      range: mergeArraysByLabel(currentSettings.range, translatedSettings.range),
+      templatefx: mergeArraysByLabel(currentSettings.templatefx, translatedSettings.templatefx),
       version: "5",
     };
 
@@ -164,11 +166,12 @@ function mergeArraysByLabel(array1, array2) {
 
   return array1.map((item) => {
     const matchingItem = labelMap.get(item.metaData.label);
-    return matchingItem
-      ? {
-          ...item,
-          ...matchingItem,
-        }
-      : item;
+    if (matchingItem) {
+      return {
+        ...item,
+        ...matchingItem,
+      };
+    }
+    return item;
   });
 }

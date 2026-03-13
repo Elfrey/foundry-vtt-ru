@@ -6,5 +6,5 @@ export function init() {
 }
 
 function registerConverters() {
-  /* placeholder */
+  /* Placeholder */
 }

@@ -1,18 +1,18 @@
 import { setupBabele, translateValue } from "../shared.js";
 
 const CLASSES = {
+  Bartan: "Бартан",
+  General: "Общий",
   Heavy: "Гоплит",
   Medic: "Врач",
   Officer: "Офицер",
+  Orite: "Орите",
+  Panyar: "Паньяр",
   Rookie: "Новобранец",
   Scout: "Разведчик",
   Sniper: "Снайпер",
   Soldier: "Солдат",
-  Panyar: "Паньяр",
-  Bartan: "Бартан",
-  Orite: "Орите",
   Zemyati: "Земьяти",
-  General: "Общий",
 };
 
 export function init() {
@@ -21,16 +21,22 @@ export function init() {
 }
 
 function registerConverters() {
-  if (!game.babele) return;
+  if (!game.babele) {
+    return;
+  }
 
   game.babele.registerConverters({
     classConverter: (cls) => {
-      if (!cls) return;
+      if (!cls) {
+        return;
+      }
       return translateValue(cls, CLASSES);
     },
 
     effectsConverter: (effects, translations) => {
-      if (!effects || !translations) return;
+      if (!effects || !translations) {
+        return;
+      }
       return effects.map((effect) => {
         if (effect.name && translations[effect.name]) {
           effect.name = translations[effect.name];
